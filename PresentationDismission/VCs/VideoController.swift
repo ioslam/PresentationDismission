@@ -1,15 +1,16 @@
 //
-//  Videovc.swift
+//  VideoController.swift
 //  PresentationDismission
 //
-//  Created by Eslam on 4/18/20.
+//  Created by Eslam on 5/13/20.
 //  Copyright © 2020 Eslam. All rights reserved.
 //
+
 
 import UIKit
 import AVKit
 
-class VideoVC: UIViewController {
+class VideoController: UIViewController {
 
     @IBOutlet weak var CurrentLabel: UILabel!
     @IBOutlet weak var FullLabel: UILabel!
@@ -45,27 +46,27 @@ class VideoVC: UIViewController {
         super.viewDidLoad()
         loadVideo()
     }
-    @IBAction func onDismissionGesture(_ sender: UIPanGestureRecognizer) {
-        let touchPoint = sender.location(in: self.view?.window)
-        if(sender.state==UIGestureRecognizer.State.began){
-            initialTouchPoint = touchPoint
-        }else if(sender.state==UIGestureRecognizer.State.changed){
-            if touchPoint.y - initialTouchPoint.y > 0 {
-                self.view.frame = CGRect(x: 0, y: touchPoint.y, width: self.view.frame.width, height: self.view.frame.height)
-            }
-        }else if sender.state==UIGestureRecognizer.State.ended || sender.state==UIGestureRecognizer.State.cancelled{
-            
-            if touchPoint.y - initialTouchPoint.y > 100 {
-                self.dismiss(animated: true, completion: nil)
-            }else{
-                UIView.animate(withDuration: 0.3, animations: {self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)})
-            }
-        }
-    }
+//    @IBAction func onDismissionGesture(_ sender: UIPanGestureRecognizer) {
+//        let touchPoint = sender.location(in: self.view?.window)
+//        if(sender.state==UIGestureRecognizer.State.began){
+//            initialTouchPoint = touchPoint
+//        }else if(sender.state==UIGestureRecognizer.State.changed){
+//            if touchPoint.y - initialTouchPoint.y > 0 {
+//                self.view.frame = CGRect(x: 0, y: touchPoint.y, width: self.view.frame.width, height: self.view.frame.height)
+//            }
+//        }else if sender.state==UIGestureRecognizer.State.ended || sender.state==UIGestureRecognizer.State.cancelled{
+//
+//            if touchPoint.y - initialTouchPoint.y > 100 {
+//                self.dismiss(animated: true, completion: nil)
+//            }else{
+//                UIView.animate(withDuration: 0.3, animations: {self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)})
+//            }
+//        }
+//    }
     
 }
 //MARK: - timeObserver & getCurrentTime
-extension VideoVC {
+extension VideoController {
     
     func addTimeObserver() {
         let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
@@ -105,7 +106,7 @@ extension VideoVC {
 
 
 //MARK: - Video Tracking Methods
-extension VideoVC {
+extension VideoController {
         //MARK: - Video Slider Began Tracking
         @objc func sliderBeganTracking() {
             is_sliding = true
@@ -188,7 +189,7 @@ extension VideoVC {
 }
 
 //MARK: - Load Video
-extension VideoVC {
+extension VideoController {
     func loadVideo() {
         ActivityIndicator.startAnimating()
         player = AVPlayer.init(url: url)

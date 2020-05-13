@@ -31,7 +31,7 @@ final class SheetModalPresentationController: UIPresentationController {
         // Calculate the frame for the presented view controller using the passed in height.
         var frame = containerBounds
         frame.size.height = height
-        frame.origin.y = containerBounds.height - height
+        frame.origin.y = containerBounds.height - height + 0.5// - height
         
         return frame
     }
@@ -39,12 +39,12 @@ final class SheetModalPresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
                 
-        guard let containerBounds = containerView?.bounds else { return }
-        
+        guard let containerBounds = containerView?.bounds, let presentedView = presentedView else { return }
+
         // Add a pan gesture recognizer for pull to dismiss.
-        presentedView?.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:))))
+        presentedView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:))))
         // Round the the presented view controller's corners.
-        presentedView?.layer.cornerRadius = 40
+        //presentedView?.layer.cornerRadius = 40
         
         // Add a dimming view below the presented view controller, and a tap gesture recognizer to it for dismissal.
         dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismiss)))
@@ -64,6 +64,10 @@ final class SheetModalPresentationController: UIPresentationController {
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
             self.dimmingView.alpha = 0
         })
+    }
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
+    //        // Not setting this to nil causes a retain cycle for some reason.
+            propertyAnimator = nil
     }
     
     // MARK: Private Functions
